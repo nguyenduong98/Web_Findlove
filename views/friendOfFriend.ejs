@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>findlove</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<body>
+    <div class="header">
+        <div class="row" style="height:5rem; background-color: #04B4AE;position: fixed;width:100%;z-index: 2;">
+            <div class="col-md-2">
+                <h1 style="color:white;font-size: 3.5rem;margin-top:1.1rem">FindLove</h1>
+            </div>
+            <div class="col-md-5">
+                <form action="" style="margin-top:2.3rem;width:80%; margin-left:7%">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nhập Thông Tin Cần Tìm" aria-label="Nhập thông tin cần tìm" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search" style="color:white"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5" style="padding-top:2rem">
+                <nav class="nav">
+                    <a class="nav-link active" href="#">
+                        <img src="/img/<%=userlogin.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;margin-top:-0.8rem;" alt="">
+                    </a>
+                    <a class="nav-link" href="#" style="color:white;margin-left:1.5rem"><h6><%=name%></h6></a>
+                    <a class="nav-link" href="#"><i class="fas fa-comment" style="color:white;font-size: 1.5rem;margin-left:2rem"></i></a>
+                    <div class="dropdown">
+                        <button class="dropbtn"><a class="nav-link" href="#">
+                            <i class="fas fa-user-friends icon-friend" style="color:white;font-size: 1.5rem;margin-left:-1rem"></i></a>
+                        </button>
+                        <div class="dropdown-content" style="overflow: scroll;height:35rem">
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col-md-10">
+            <div class="infoUser">
+                <div class="row">
+                    <div class="imgUser">
+                        <div style="background-image: url('/img/<%=userOfIdUser.imgCover%>');" class="coverImage"></div>
+                        <img src="/img/<%=userOfIdUser.avatar%>" class="avataUser" alt=""/>
+                        <h1 class="usernameUser"></h1>
+                        <ul class="list-inline" style="padding-left:14.5rem">
+                            <li class="list-inline-item" style="width:8rem !important; text-align: center;">
+                                <a style="color:black">Bạn Bè</a>
+                            </li>
+                            <li class="list-inline-item" style="width:4rem !important; text-align: center;">
+                                <a href="/findlove/imgoffriend/<%=idUser%>" style="color:black">Ảnh</a>
+                            </li>
+                            <li class="list-inline-item" style="width:8rem !important; text-align: center;">
+                                <a href="/findlove/newfeed" style="color:black">Bảng Tin</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-md-4">
+                            <div class="card moreInfo">
+                                <h4 style="text-align:center">Tôi là người như thế nào</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <p class="textMoreInfo" style="text-align: center;"><%=moreinfo.introduce%></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card moreInfo">
+                                <h4 style="text-align:center">Thông tin cơ bản</h4>
+                                <ul class="list-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <li class="list-group-item">
+                                                <h6>Chiều cao</h6>
+                                                <a class="textMoreInfo"><%=moreinfo.height%></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <h6>Nơi sống</h6>
+                                                <a class="textMoreInfo"><%=moreinfo.dress%></a>
+                                            </li>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <li class="list-group-item">
+                                                <h6>Cân Nặng</h6>
+                                                <a class="textMoreInfo"><%=moreinfo.weight%></a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <h6>Quê quán</h6>
+                                                <a class="textMoreInfo"><%=moreinfo.homeTown%></a>
+                                            </li>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <div class="card moreInfo">
+                                <h4 style="text-align:center">Học vấn - nghề nghiệp</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <h6>Học vấn</h6>
+                                        <a class="textMoreInfo"><%=moreinfo.school%></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <h6>Nghề nghiệp</h6>
+                                        <a class="textMoreInfo"><%=moreinfo.job%></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <h6>Thu nhập hàng tháng</h6>
+                                        <a class="textMoreInfo"><%=moreinfo.salary%></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card moreInfo">
+                                <h4 style="text-align:center">Quan điểm</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <h6>Sở thích</h6>
+                                        <a class="textMoreInfo"><%=moreinfo.hobby%></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <h6>Quan điểm về tình yêu</h6>
+                                        <a class="textMoreInfo"><%=moreinfo.viewOfLove%></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <h6>Mẫu người muốn tìm</h6>
+                                        <a class="textMoreInfo"><%=moreinfo.kindOfLover%></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card" style="margin-top:3rem;width:120%;height:65rem;overflow: scroll;">
+                                <div class="card-body">
+                                    <div class="row" style="margin-top:1rem">
+                                        <% listfriend && listfriend.length>0 && listfriend.forEach(item=>{ %>
+                                            <div class="col-md-5" style="width:90%;border:1px solid gray;height:5rem;margin-left:2rem;margin-top:1rem;padding-left:0rem;padding-top:0rem">
+                                                <img src="/img/<%=item.avatar%>" alt="" style="height:100%;float: left;margin-right:0.5rem">
+                                                <h6 style="margin-top:2rem;"><a href="/findlove/home/<%=item._id%>"><%=item.username%></a></h6>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/news.client.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+</body>
+
+</html>

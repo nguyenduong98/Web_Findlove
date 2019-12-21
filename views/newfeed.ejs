@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Newfeed</title>
+    <link rel="stylesheet" href="/css/newfeed.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" style="height:5rem; background-color: #04B4AE;position: fixed;width:100%;z-index: 2;">
+            <div class="col-md-2">
+                <h1 style="color:white;font-size: 3.5rem;margin-top:1.1rem">FindLove</h1>
+            </div>
+            <div class="col-md-5">
+                <form action="" style="margin-top:2.3rem;width:80%; margin-left:7%">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nhập Thông Tin Cần Tìm" aria-label="Nhập thông tin cần tìm" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search" style="color:white"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5" style="padding-top:2rem">
+                <nav class="nav">
+                    <a class="nav-link active" href="/findlove/home">
+                        <img src="/img/<%=userlogin.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;margin-top:-0.8rem;" alt="">
+                    </a>
+                    <a class="nav-link" href="/findlove/home" style="color:white;margin-left:1.5rem"><h6><%=name%></h6></a>
+                    <a class="nav-link" href="#"><i class="fas fa-comment" style="color:white;font-size: 1.5rem;margin-left:2rem"></i></a>
+                    <div class="dropdown">
+                        <button class="dropbtn"><a class="nav-link" href="#">
+                            <i class="fas fa-user-friends icon-friend" style="font-size: 1.5rem;margin-left:-1rem"></i></a>
+                        </button>
+                        <div class="dropdown-content" style="overflow: scroll;height:35rem">
+                            <% listUserDegree && listUserDegree.length>0 && listUserDegree.forEach(item=>{ %>
+                                <div class="item">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <a href="/findlove/home/<%=item._id%>"><img src="/img/<%=item.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt=""></a>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <a href="/findlove/home/<%=item._id%>"><h6 style="margin-top:1rem; float:left"><%=item.username%></h6></a>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <% if(receivedAddFriend.includes(item._id)){ %>
+                                                <a href="/findlove/removeAddFriend/<%=item._id%>">
+                                                    <button type="button" class="btn btn-danger">Xóa Yêu Cầu</button>
+                                                </a>
+                                            <% }else{ %>
+                                                <a href="/findlove/sentAddfriend/<%=item._id%>">
+                                                    <button type="button" class="btn btn-primary" style="float:left !important"> Gửi kết bạn</button>
+                                                </a>  
+                                            <% } %>      
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div style="height:25rem;width:20%;margin-top:7rem;margin-left:4%;border-radius: 5px 5px;position: fixed;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                    <ul class="list-group" style="overflow: scroll;height:100%">
+                        <li class="list-group-item active">Yêu Cầu Kết Bạn</li>
+                        <% listUserWaitAcept && listUserWaitAcept.length>0 && listUserWaitAcept.forEach(item=>{ %>
+                            <li class="list-group-item">
+                                <img src="/img/<%=item.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:1rem;margin-top:0.5rem" alt="">
+                                <h6><%=item.username%></h6>
+                                <a href="/findlove/aceptaddfriend/<%=item._id%>">
+                                    <button type="button" class="btn btn-primary">Chấp nhận</button>
+                                </a>
+                                <a href="/findlove/refuse/<%=item._id%>">
+                                    <button type="button" class="btn btn-danger">Xóa</button>
+                                </a>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div style="width:20%;height:12rem;margin-left:4%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position: fixed;margin-top:33rem;border-radius: 5px 5px;">
+                    <img src="/img/<%=game.img%>" style="height:70%;width:100%;border-radius: 5px 5px 0px 0px;" alt="">
+                    <% userPlayGame && userPlayGame.length>0 && userPlayGame.forEach(item=>{ %>
+                        <img src="/img/<%=item.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-left:0.5rem;margin-top:0.5rem" alt="">
+                    <% }) %>
+                    
+                </div>
+            </div>
+            <div class="col-md-5" style="margin-left:2rem">
+                <div style="width:100%;height:20rem;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-top:7rem;border-radius: 5px 5px;z-index: 1;">
+                    <div class="row">
+                        <img src="/img/<%=userlogin.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;margin-top:1rem;margin-left:2rem" alt="">
+                        <h6 style="margin-top:1.6rem;margin-left:1rem"><%=userlogin.username%></h6>
+                    </div>
+                    <form action="/findlove/addpost" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <textarea rows="7" cols="63" name="status" placeholder="<%=name%>, bạn đang nghĩ gì ???" style="margin-left:6rem;padding-left:0.5rem"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="input-group mb-3" style="width:100%;margin-left:5rem;margin-top:1rem;float:left">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name=img id="inputGroupFile02">
+                                        <label class="custom-file-label" for="inputGroupFile02"><img src="/system/image.png" style="height:2rem;width:2rem;margin-top:-0.2rem" alt=""></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <button type="submit" class="btn btn-primary" style="margin-top:1rem;margin-left:6.5rem">Đăng Bài</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <% listpost && listpost.length>0 && listpost.forEach(item=>{ %>
+                    <% if(!item.posts.ObjectPostShare) {%>
+                        <div class="card" style="margin-top:2rem;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-bottom:1rem">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <a href="/findlove/home/<%=item.users._id%>"><img src="/img/<%=item.users.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;margin-left:1rem;margin-top:1rem;float:left !important" alt="Card image cap"></a>
+                                </div>
+                                <div class="col-md-8">
+                                    <h6 style="margin-top:1.6rem;margin-left:1.8rem;"><a href="/findlove/home/<%=item.users._id%>" style="color:#385898 !important"><b><%=item.users.username%></b></a></h6>
+                                </div>
+                                <div class="col-md-1">
+                                    <% if(item.posts.idUser.toString()==userlogin._id.toString()){ %>
+                                        <a href="/findlove/deletepost/<%=item.posts._id%>"><img src="/system/delete.png" style="height:1.5rem;width:1.5rem;margin-top:1.5rem;margin-left:4rem" alt=""></a>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><%=item.posts.status%></p>
+                            </div>
+                            <% if(item.posts.img){ %>
+                                <img class="card-img-bottom" src="/img/<%=item.posts.img%>">
+                            <%}%>
+                            <div class="row" style="border-top:1px solid gray;width:100%;margin-left:0rem;height:3rem">
+                                <div class="col-md-6">
+                                    <% if(item.userandposts.listUserLike.toString().search(userlogin._id)!=-1 || item.userandposts.listUserLove.toString().search(userlogin._id)!=-1 || item.userandposts.listUserHaha.toString().search(userlogin._id)!=-1 || item.userandposts.listUserWow.toString().search(userlogin._id)!=-1 || item.userandposts.listUserSad.toString().search(userlogin._id)!=-1 || item.userandposts.listUserAngry.toString().search(userlogin._id)!=-1){ %>
+                                        <h6 style="margin-top:1rem;margin-left:1rem">Bạn Và <%= (item.userandposts.listUserAngry.length+item.userandposts.listUserHaha.length+item.userandposts.listUserLike.length+item.userandposts.listUserLove.length+item.userandposts.listUserSad.length+item.userandposts.listUserWow.length - 1) %> người khác</h6>
+                                    <% }else{ %>
+                                        <h6 style="margin-top:1rem;margin-left:3.5rem"><%= (item.userandposts.listUserAngry.length+item.userandposts.listUserHaha.length+item.userandposts.listUserLike.length+item.userandposts.listUserLove.length+item.userandposts.listUserSad.length+item.userandposts.listUserWow.length) %> người khác</h6>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="row" style="border-top:1px solid gray;width:100%;margin-left:0rem">
+                                <div class="col-md-4 baobtn">
+                                    <a href="/findlove/feel/like/<%=item._id%>/<%=userlogin._id%>" style="color: black !important;">
+                                        <button type="button" class="btn btn-light btnpost">
+                                            <% if(item.userandposts.listUserLike.toString().search(userlogin._id)!=-1){ %>
+                                                <img src="/system/like.png" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem" alt=""><b style="color:#558DFF">Thích</b>
+                                            <% }else if(item.userandposts.listUserLove.toString().search(userlogin._id)!=-1){ %>
+                                                <img src="/system/logo.png" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem" alt=""><b style="color:#EA233B">Yêu thích</b>
+                                            <% }else if(item.userandposts.listUserHaha.toString().search(userlogin._id)!=-1){ %>
+                                                <img src="/system/haha.png" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#F1C602">Haha</b>
+                                            <% }else if(item.userandposts.listUserSad.toString().search(userlogin._id)!=-1){ %>
+                                                <img src="/system/buon.jpg" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#FFDE6D">Buồn</b>
+                                            <% }else if(item.userandposts.listUserWow.toString().search(userlogin._id)!=-1){ %>
+                                                <img src="/system/wow.jpg" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#FADA72">Wow</b>
+                                            <% }else if(item.userandposts.listUserAngry.toString().search(userlogin._id)!=-1){ %>
+                                                <img src="/system/angry.jpg" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#F9AC6A">Phẫn Nỗ</b>
+                                            <% }else{ %>
+                                                <i class="far fa-thumbs-up" style="margin-right:0.5rem"></i> Thích
+                                            <% } %>
+                                            <div class="listcamxua">
+                                                <div class="row" style="padding-top:0.5rem">
+                                                    <div class="col-md-2">
+                                                        <a href="/findlove/feel/like/<%=item._id%>/<%=userlogin._id%>"><img src="/system/like.png" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:0.7rem" alt=""></a>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="/findlove/feel/love/<%=item._id%>/<%=userlogin._id%>"><img src="/system/logo.png" style="width:2.5rem;height:2.5rem;border-radius: 100%;" alt=""></a>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="/findlove/feel/haha/<%=item._id%>/<%=userlogin._id%>"><img src="/system/haha.png" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-0.6rem"></a>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="/findlove/feel/sad/<%=item._id%>/<%=userlogin._id%>"><img src="/system/buon.jpg" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-1.8rem"></a>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="/findlove/feel/wow/<%=item._id%>/<%=userlogin._id%>"><img src="/system/wow.jpg" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-3rem"></a>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <a href="/findlove/feel/angry/<%=item._id%>/<%=userlogin._id%>"><img src="/system/angry.jpg" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-4rem"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-light btnpost" style="width:10rem;margin:0.5rem 0.5rem"><i class="far fa-comment-alt" style="margin-right:1rem"></i> Bình luận</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="/findlove/sharepost/<%=item.posts._id%>/<%=userlogin._id%>"><button type="button" class="btn btn-light btnpost" style="width:10rem;margin:0.5rem 0.5rem">Chia sẻ</button></a>
+                                </div>
+                            </div>
+                            <div class="row listcomment">
+                                <div class="card" style="width:100%;border:none;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <img src="/img/<%=userlogin.avatar%>" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:2rem" alt="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <form action="/findlove/comment" method="post">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"  placeholder="Viết bình luận" name="comment" style="width:90%;margin-left:3rem;border-radius: 30px 30px;">
+                                                        <input type="text" class="form-control" value="<%=item.posts._id%>" name="idPostCmt" style="display: none;">
+                                                        <input type="submit" class="form-control" style="display: none;">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <% if(item.posts.ObjectComment){ %>
+                                <div class="row listcomment" style="border-top:none;margin-top:-2rem">
+                                    <div class="card" style="border:none">
+                                        <div class="card-body">
+                                            <% item.posts.ObjectComment && item.posts.ObjectComment.length>0 && item.posts.ObjectComment.forEach(cmt=>{ %>
+                                                <div class="row listcomment" style="border:none;margin-top:-1rem">
+                                                        <div class="card" style="width:100%;border:none;">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <img src="/img/<%=cmt.avatar%>" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:0.7rem" alt="">
+                                                                    </div>
+                                                                    <div class="col-md-10">
+                                                                        <div class="card" style="margin-left:-0.8rem;border-radius: 20px 20px;width:28.5rem">
+                                                                            <div class="card-body" style="margin:-0.8rem -0.8rem !important;">
+                                                                                <b style="float:left; margin-right:0.5rem;color:#385898"><%=cmt.username%></b> <%=cmt.comment%>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            <% }) %>
+                                        </div>
+                                    </div>
+                                </div>
+                           <% } %>
+                        </div>
+                    <% }else{ %>
+                        <div class="card  mb-3" style="margin-top:2rem;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-bottom:1rem">
+                            <div class="card-header bg-transparent ">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <a href="/findlove/home/<%=item.users._id%>"><img src="/img/<%=item.users.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;margin-left:0rem;margin-top:1rem;float:left !important" alt="Card image cap"></a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 style="margin-top:1.6rem;margin-left:1rem"><a href="/findlove/home/<%=item.users._id%>" style="color:#385898"><b><%=item.users.username%></b></a></h6>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <% if(item.posts.idUser.toString()==userlogin._id.toString()){ %>
+                                            <a href="/findlove/deletepost/<%=item.posts._id%>"><img src="/system/delete.png" style="height:1.5rem;width:1.5rem;margin-top:1.5rem;margin-left:4rem" alt=""></a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <div class="card" style="border:none !important;margin-top:-1.2rem;">
+                                    <div class="card-body" style="margin-top:-1rem">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <a href="/findlove/home/<%=item.posts.ObjectPostShare.users._id%>"><img src="/img/<%=item.posts.ObjectPostShare.users.avatar%>" style="height:3rem;width:3rem;border-radius: 100%;margin-left:0.7rem;margin-top:1rem;float:left !important" alt="Card image cap"></a>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 style="margin-top:1.6rem;margin-left:1.8rem"><a href="/findlove/home/<%=item.posts.ObjectPostShare.users._id%>" style="color:#385898"><b><%=item.posts.ObjectPostShare.users.username%></b></a></h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text" style="margin-left:1rem;margin-top:0.5rem"><%=item.posts.ObjectPostShare.posts.status%></p>
+                                    </div>
+                                    <% if(item.posts.ObjectPostShare.posts.img){ %>
+                                        <img class="card-img-bottom" src="/img/<%=item.posts.ObjectPostShare.posts.img%>">
+                                    <%}%>
+                                </div>
+                            </div>
+                            <div class=" bg-transparent border-success">
+                                <div class="row" style="width:100%;margin-left:0rem;height:3rem;margin-top:-1rem">
+                                    <div class="col-md-6">
+                                        <% if(item.userandposts.listUserLike.toString().search(userlogin._id)!=-1 || item.userandposts.listUserLove.toString().search(userlogin._id)!=-1 || item.userandposts.listUserHaha.toString().search(userlogin._id)!=-1 || item.userandposts.listUserWow.toString().search(userlogin._id)!=-1 || item.userandposts.listUserSad.toString().search(userlogin._id)!=-1 || item.userandposts.listUserAngry.toString().search(userlogin._id)!=-1){ %>
+                                            <h6 style="margin-top:1rem;margin-left:1rem">Bạn Và <%= (item.userandposts.listUserAngry.length+item.userandposts.listUserHaha.length+item.userandposts.listUserLike.length+item.userandposts.listUserLove.length+item.userandposts.listUserSad.length+item.userandposts.listUserWow.length - 1) %> người khác</h6>
+                                        <% }else{ %>
+                                            <h6 style="margin-top:1rem;margin-left:3.5rem"><%= (item.userandposts.listUserAngry.length+item.userandposts.listUserHaha.length+item.userandposts.listUserLike.length+item.userandposts.listUserLove.length+item.userandposts.listUserSad.length+item.userandposts.listUserWow.length) %> người khác</h6>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="row" style="border-top:1px solid gray;width:100%;margin-left:0rem">
+                                    <div class="col-md-4 baobtn">
+                                        <a href="/findlove/feel/like/<%=item._id%>/<%=userlogin._id%>" style="color: black !important;">
+                                            <button type="button" class="btn btn-light btnpost">
+                                                <% if(item.userandposts.listUserLike.toString().search(userlogin._id)!=-1){ %>
+                                                    <img src="/system/like.png" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem" alt=""><b style="color:#558DFF">Thích</b>
+                                                <% }else if(item.userandposts.listUserLove.toString().search(userlogin._id)!=-1){ %>
+                                                    <img src="/system/logo.png" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem" alt=""><b style="color:#EA233B">Yêu thích</b>
+                                                <% }else if(item.userandposts.listUserHaha.toString().search(userlogin._id)!=-1){ %>
+                                                    <img src="/system/haha.png" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#F1C602">Haha</b>
+                                                <% }else if(item.userandposts.listUserSad.toString().search(userlogin._id)!=-1){ %>
+                                                    <img src="/system/buon.jpg" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#FFDE6D">Buồn</b>
+                                                <% }else if(item.userandposts.listUserWow.toString().search(userlogin._id)!=-1){ %>
+                                                    <img src="/system/wow.jpg" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#FADA72">Wow</b>
+                                                <% }else if(item.userandposts.listUserAngry.toString().search(userlogin._id)!=-1){ %>
+                                                    <img src="/system/angry.jpg" style="width:2rem;height:2rem;border-radius: 100%;margin-right:1rem"><b style="color:#F9AC6A">Phẫn Nỗ</b>
+                                                <% }else{ %>
+                                                    <i class="far fa-thumbs-up" style="margin-right:0.5rem"></i> Thích
+                                                <% } %>
+                                                <div class="listcamxua">
+                                                    <div class="row" style="padding-top:0.5rem">
+                                                        <div class="col-md-2">
+                                                            <a href="/findlove/feel/like/<%=item._id%>/<%=userlogin._id%>"><img src="/system/like.png" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:0.7rem" alt=""></a>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="/findlove/feel/love/<%=item._id%>/<%=userlogin._id%>"><img src="/system/logo.png" style="width:2.5rem;height:2.5rem;border-radius: 100%;" alt=""></a>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="/findlove/feel/haha/<%=item._id%>/<%=userlogin._id%>"><img src="/system/haha.png" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-0.6rem"></a>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="/findlove/feel/sad/<%=item._id%>/<%=userlogin._id%>"><img src="/system/buon.jpg" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-1.8rem"></a>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="/findlove/feel/wow/<%=item._id%>/<%=userlogin._id%>"><img src="/system/wow.jpg" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-3rem"></a>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <a href="/findlove/feel/angry/<%=item._id%>/<%=userlogin._id%>"><img src="/system/angry.jpg" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:-4rem"></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-light btnpost" style="width:10rem;margin:0.5rem 0.5rem"><i class="far fa-comment-alt" style="margin-right:1rem"></i> Bình luận</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-light btnpost" style="width:10rem;margin:0.5rem 0.5rem">Chia sẻ</button>
+                                    </div>
+                                    <div class="row listcomment">
+                                            <div class="card" style="width:100%;border:none;">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <img src="/img/<%=userlogin.avatar%>" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:2rem" alt="">
+                                                        </div>
+                                                        <div class="col-md-11">
+                                                            <form action="/findlove/comment" method="post">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control"  placeholder="Viết bình luận" name="comment" style="width:90%;margin-left:3rem;border-radius: 30px 30px;">
+                                                                    <input type="text" class="form-control" value="<%=item.posts._id%>" name="idPostCmt" style="display: none;">
+                                                                    <input type="submit" class="form-control" style="display: none;">
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       <% if(item.posts.ObjectComment){ %>
+                                            <div class="row listcomment" style="border-top:none;margin-top:-2rem">
+                                                <div class="card" style="border:none">
+                                                    <div class="card-body">
+                                                        <% item.posts.ObjectComment && item.posts.ObjectComment.length>0 && item.posts.ObjectComment.forEach(cmt=>{ %>
+                                                            <div class="row listcomment" style="border:none;margin-top:-1rem">
+                                                                    <div class="card" style="width:100%;border:none;">
+                                                                        <div class="card-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <img src="/img/<%=cmt.avatar%>" style="width:2.5rem;height:2.5rem;border-radius: 100%;margin-left:0.7rem" alt="">
+                                                                                </div>
+                                                                                <div class="col-md-10">
+                                                                                    <div class="card" style="margin-left:-0.8rem;border-radius: 20px 20px;width:28.5rem">
+                                                                                        <div class="card-body" style="margin:-0.8rem -0.8rem !important;">
+                                                                                            <b style="float:left; margin-right:0.5rem;color:#385898"><%=cmt.username%></b> <%=cmt.comment%>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        <% }) %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                       <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
+            </div>
+            <div class="col-md-3">
+                <div style="height:38rem;width:22%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-top:7rem;margin-left:1rem;border-radius: 5px 5px;position: fixed;">
+                    <ul class="list-group">
+                        <li class="list-group-item active">Bạn Bè Online</li>
+                        <li class="list-group-item">
+                            <img src="https://nguoi-noi-tieng.com/photo/tieu-su-hoa-hau-do-my-linh-5430.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Đỗ Mỹ Linh</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="https://icdn.dantri.com.vn/2017/noo-3-1507346862593.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Noo Phước Thịnh</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item"> 
+                            <img src="https://znews-stc.zdn.vn/static/topic/person/tqa.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Trương Quỳnh Anh</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="https://image2.tin247.com/pictures/2019/09/18/mmw1568824853.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Ngọc Trinh</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="https://zmp3-photo-fbcrawler.zadn.vn/covers/8/5/8566725e2e73f1a374c7b410a8184963_1498731348.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Ngô Kiến Huy</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="https://baokyanh.com/wp-content/uploads/2019/07/hot-mai-phuong-thuy-xac-nhan-chuan-bi-ket-hon-tiet-lo-hiem-hoi-ve-chong-sap-cuoi1-1563030344.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Mai Phương Thúy</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="/system/ee58fcc0ff45002b8d416bd7685809ce_1487040461.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">Sơn Tùng MTP</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                        <li class="list-group-item">
+                            <img src="/system/1513222160122_600.jpg" class="friendOnline" style="height:3rem;width:3rem;border-radius: 100%;float:left;margin-right:2rem" alt="">
+                            <h6 style="margin-top:1rem; float:left">ST Sơn Thạch</h6>
+                            <div style="height:0.5rem;width:0.5rem;border-radius: 100%;background-color: chartreuse;float:right;margin-top:1.5rem"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <script src="/js/newfeed.js"></script>
+</body>
+</html>
