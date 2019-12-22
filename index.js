@@ -3,7 +3,7 @@ const server  = express()
 const PORT    = 3001
 const bodyParser       = require('body-parser')
 const mongoose         = require('mongoose')
-const url              = 'mongodb://localhost:27017/findlove'
+const url              = 'mongodb+srv://admin:admin@cluster0-4oo8e.mongodb.net/test?retryWrites=true&w=majority'
 const { LOGIN }        = require('./route/login.route')
 const { REGESTION }    = require('./route/regestion.route')
 const { POST }         = require('./route/post')
